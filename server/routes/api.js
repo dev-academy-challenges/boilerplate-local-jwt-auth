@@ -1,4 +1,3 @@
-const bodyParser = require('body-parser')
 const express = require('express')
 const verifyJwt = require('express-jwt')
 
@@ -7,7 +6,7 @@ const users = require('../lib/users')
 const auth = require('../lib/auth')
 
 const router = express.Router()
-router.use(bodyParser.json())
+router.use(express.json())
 
 router.post('/signin',
   signIn,
