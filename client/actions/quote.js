@@ -8,10 +8,10 @@ export function fetchQuote () {
   return function (dispatch) {
     dispatch(requestQuote())
     request('get', '/quote')
-    .then(res => {
-      dispatch(receiveQuote(res.body.message, res.body.user))
-    })
-    .catch(err => dispatch(quoteError(err.response.body.message)))
+      .then(res => {
+        dispatch(receiveQuote(res.body.message, res.body.user))
+      })
+      .catch(err => dispatch(quoteError(err.response.body.message)))
   }
 }
 
@@ -19,10 +19,10 @@ export function fetchSecretQuote () {
   return function (dispatch) {
     dispatch(requestQuote())
     request('get', '/secret')
-    .then(res => {
-      dispatch(receiveQuote(res.body.message, res.body.user))
-    })
-    .catch(err => dispatch(quoteError(err.response.body.message)))
+      .then(res => {
+        dispatch(receiveQuote(res.body.message, res.body.user))
+      })
+      .catch(err => dispatch(quoteError(err.response.body.message)))
   }
 }
 
