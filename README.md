@@ -6,9 +6,9 @@ This demonstrates a fairly minimal username/password auth scenario that makes us
 ## Setup
 
 ```shell
-npm i
+yarn
 mv .env.example .env
-npm start
+yarn dev
 ```
 
 * A `postinstall` script will run a knex migration that creates a `users` table.
