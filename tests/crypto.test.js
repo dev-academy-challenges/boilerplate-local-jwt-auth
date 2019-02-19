@@ -1,27 +1,44 @@
-const sodium = require('sodium').api
+const sodium = require('libsodium-wrappers')
 
 const crypto = require('../server/lib/crypto')
 
 test('getHash returns verifiable hash in buffer', () => {
-  const password = Buffer.from('password', 'utf8')
-  const actual = crypto.getHash('password')
-  expect(sodium.crypto_pwhash_str_verify(actual, password)).toBeTruthy()
+  const password = 'password'
+  return crypto.getHash(password)
+    .then(hash => sodium.crypto_pwhash_str_verify(hash, password))
+    .then(isValid => {
+      expect(isValid).toBeTruthy()
+    })
 })
 
 test('verifyUser verifies user with correct password', () => {
-  const hash = sodium.crypto_pwhash_str(
-    Buffer.from('aardvark', 'utf8'),
-    sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
-    sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE
-  )
-  expect(crypto.verifyUser({hash}, 'aardvark')).toBeTruthy()
+  return sodium.ready.then(() => {
+    return sodium.crypto_pwhash_str(
+      'aardvark',
+      sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
+      sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE
+    )
+  })
+  .then(hash => {
+    crypto.verifyUser(hash, 'aardvark')
+      .then(isValid => {
+        expect(isValid).toBeTruthy()
+      })
+  })
 })
 
 test('verifyUser does not veryfiy user with incorrect password', () => {
-  const hash = sodium.crypto_pwhash_str(
-    Buffer.from('capybara', 'utf8'),
-    sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
-    sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE
-  )
-  expect(crypto.verifyUser({hash}, 'wrong password')).toBeFalsy()
+  return sodium.ready.then(() => {
+    return sodium.crypto_pwhash_str(
+      'aardvark',
+      sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
+      sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE
+    )
+  })
+  .then(hash => {
+    crypto.verifyUser(hash, 'wrong password')
+      .then(isValid => {
+        expect(isValid).toBeFalsy()
+      })
+  })
 })

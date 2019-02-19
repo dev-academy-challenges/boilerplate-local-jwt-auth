@@ -78,6 +78,7 @@ router.get('/quote',
 )
 
 // Protect all routes beneath this point
+
 router.use(
   verifyJwt({
     secret: getSecret
@@ -85,7 +86,6 @@ router.use(
   auth.handleError
 )
 
-// These routes are protected
 router.get('/secret', (req, res) => {
   res.json({
     message: 'This is a SECRET quote.',

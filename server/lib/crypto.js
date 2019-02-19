@@ -1,4 +1,4 @@
-const sodium = require('sodium').api
+const sodium = require('libsodium-wrappers')
 
 module.exports = {
   getHash,
@@ -6,15 +6,15 @@ module.exports = {
 }
 
 function getHash (password) {
-  const passwordBuffer = Buffer.from(password, 'utf8')
-  return sodium.crypto_pwhash_str(
-    passwordBuffer,
-    sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
-    sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE
-  )
+  return sodium.ready.then(() =>
+    sodium.crypto_pwhash_str(
+      password,
+      sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
+      sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE
+    ))
 }
 
 function verifyUser (hash, password) {
-  const passwordBuffer = Buffer.from(password, 'utf8')
-  return sodium.crypto_pwhash_str_verify(hash, passwordBuffer)
+  return sodium.ready.then(() =>
+    sodium.crypto_pwhash_str_verify(hash, password))
 }

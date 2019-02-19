@@ -1,39 +1,37 @@
 const knex = require('knex')
 
-const config = require('../knexfile').test
+const testEnv = require('./test-env')
 const users = require('../server/lib/users')
 
 let testDb = null
 
 beforeEach(() => {
-  // t.context.db = knex(config)
-  // return t.context.db
-  //   .migrate.latest()
-  //   .then(() => t.context.db.seed.run())
+  testDb = testEnv.getTestDb()
+  return testEnv.initialise(testDb)
 })
 
-// afterEach(() => t.context.db.destroy())
+afterEach(() => testEnv.cleanup(testDb))
 
-test.skip('exists is true for aardvark', () => {
+test('exists is true for aardvark', () => {
   return users
     .exists('aardvark', testDb)
     .then(actual => expect(actual).toBeTruthy())
 })
 
-test.skip('exists is falsy for gnu', () => {
+test('exists is falsy for gnu', () => {
   return users
     .exists('gnu', testDb)
     .then(actual => expect(actual).toBeFalsy())
 })
 
-test.skip('getById obtains correct user', () => {
+test('getById obtains correct user', () => {
   return users
     .getById(2, testDb)
-    .then(([user]) => expect(user.username).toBe('capybara'))
+    .then(user => expect(user.username).toBe('capybara'))
 })
 
-test.skip('getByName obtains correct user', () => {
+test('getByName obtains correct user', () => {
   return users
     .getByName('aardvark', testDb)
-    .then(([ user ]) => expect(user.id).toBe(1))
+    .then(user => expect(user.id).toBe(1))
 })

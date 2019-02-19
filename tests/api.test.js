@@ -8,7 +8,7 @@ test('Authenticate complains about no credentials', () => {
     .send({})
     .expect(403)
     .then(res => {
-      expect(res.body.info).toBe('Missing credentials')
+      expect(res.body.error).toBe('No authorization token was found')
     })
 })
 
@@ -24,7 +24,7 @@ test("/api/v1/secret 403's without token", () => {
   return request(app)
     .get('/api/v1/secret')
     .expect(403)
-    .end(res => {
+    .then(res => {
       expect(res.body.error).toBe('No authorization token was found')
     })
 })

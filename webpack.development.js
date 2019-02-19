@@ -3,12 +3,13 @@ const LiveReloadPlugin = require('webpack-livereload-plugin')
 
 module.exports = {
   entry: './client/index.js',
+  mode: 'development',
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, 'public')
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',

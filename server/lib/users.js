@@ -1,6 +1,6 @@
 const environment = process.env.NODE_ENV || 'development'
 const config = require('../../knexfile')[environment]
-const knex = require('knex')(config)
+const db = require('knex')(config)
 
 const crypto = require('./crypto')
 
@@ -11,19 +11,18 @@ module.exports = {
   getByName
 }
 
-function create (username, password, testDb) {
-  const hash = crypto.getHash(password)
-  const connection = testDb || knex
-
-  return connection('users')
-    .insert({
-      username: username,
-      hash: hash
+function create (username, password, connection = db) {
+  crypto.getHash(password)
+    .then(hash => {
+      return connection('users')
+        .insert({
+          username: username,
+          hash: hash
+        })
     })
 }
 
-function exists (username, testDb) {
-  const connection = testDb || knex
+function exists (username, connection = db) {
   return connection('users')
     .count('id as n')
     .where('username', username)
@@ -32,16 +31,14 @@ function exists (username, testDb) {
     })
 }
 
-function getById (id, testDb) {
-  const connection = testDb || knex
+function getById (id, connection = db) {
   return connection('users')
     .select('id', 'username')
     .where('id', id)
     .first()
 }
 
-function getByName (username, testDb) {
-  const connection = testDb || knex
+function getByName (username, connection = db) {
   return connection('users')
     .select()
     .where('username', username)
