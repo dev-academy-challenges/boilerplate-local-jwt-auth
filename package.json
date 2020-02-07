@@ -46,7 +46,7 @@
     "babel-loader": "^8.0.6",
     "jest": "^25.1.0",
     "libsodium-wrappers": "^0.7.4",
-    "nodemon": "^1.15.0",
+    "nodemon": "^2.0.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^6.0.0",
