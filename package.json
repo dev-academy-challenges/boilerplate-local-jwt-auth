@@ -37,7 +37,7 @@
     "jwt-decode": "^2.2.0",
     "knex": "^0.20.9",
     "pg": "^7.18.1",
-    "superagent": "^5.0.2"
+    "superagent": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
