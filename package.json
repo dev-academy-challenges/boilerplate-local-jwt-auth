@@ -56,7 +56,7 @@
     "sqlite3": "^4.1.1",
     "supertest": "^4.0.2",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.10",
+    "webpack-cli": "^3.3.11",
     "webpack-livereload-plugin": "^2.2.0"
   }
 }
